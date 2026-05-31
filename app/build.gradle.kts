@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.flashcards2025"
+    namespace = "com.example.flashcards"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.flashcards2025"
+        applicationId = "com.example.flashcards"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -18,6 +18,9 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        viewBinding = true
+    }
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -28,11 +31,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
     buildFeatures {
         viewBinding = true

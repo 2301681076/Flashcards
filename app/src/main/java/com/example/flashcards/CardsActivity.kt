@@ -2,14 +2,14 @@ package com.example.flashcards
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.flashcards.databinding.ActivityCardsBinding
-import java.util.UUID
 
 class CardsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCardsBinding
+    private var currentDeck: Deck? = null
+    private var currentCardIndex = 0
     private var isShowingQuestion = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,48 +18,37 @@ class CardsActivity : AppCompatActivity() {
         binding = ActivityCardsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.cardAnswer.visibility = View.GONE
-        binding.cardQuestion.visibility = View.VISIBLE
+        val deckId = intent.getStringExtra("DECK_ID")
+        currentDeck = DataManager.decks.find { it.id == deckId }
 
-        binding.cardQuestion.setOnClickListener { flipCard() }
-        binding.cardAnswer.setOnClickListener { flipCard() }
-
-        binding.btnBack.setOnClickListener {
-            finish()
-        }
-
-        binding.btnSaveCard.setOnClickListener {
-            saveFlashcard()
-        }
-    }
-
-    private fun flipCard() {
-        if (isShowingQuestion) {
-            binding.cardQuestion.visibility = View.GONE
-            binding.cardAnswer.visibility = View.VISIBLE
-        } else {
-            binding.cardAnswer.visibility = View.GONE
-            binding.cardQuestion.visibility = View.VISIBLE
-        }
-        isShowingQuestion = !isShowingQuestion
-    }
-
-    private fun saveFlashcard() {
-        val questionText = binding.etQuestion.text.toString().trim()
-        val answerText = binding.etAnswer.text.toString().trim()
-
-        if (questionText.isEmpty() || answerText.isEmpty()) {
-            Toast.makeText(this, "Моля, попълнете и двете полета!", Toast.LENGTH_SHORT).show()
+        if (currentDeck == null || currentDeck!!.cards.isEmpty()) {
+            binding.tvQuestion.text = "Няма карти"
+            binding.btnFlip.visibility = View.GONE
+            binding.btnNextCard.visibility = View.GONE
             return
         }
 
-        val newCard = Flashcard(
-            id = UUID.randomUUID().toString(),
-            question = questionText,
-            answer = answerText
-        )
+        displayCard()
 
-        Toast.makeText(this, "Картата е запазена успешно!", Toast.LENGTH_SHORT).show()
-        finish()
+        binding.btnFlip.setOnClickListener {
+            if (isShowingQuestion) {
+                binding.tvQuestion.text = currentDeck!!.cards[currentCardIndex].answer
+            } else {
+                binding.tvQuestion.text = currentDeck!!.cards[currentCardIndex].question
+            }
+            isShowingQuestion = !isShowingQuestion
+        }
+
+        binding.btnNextCard.setOnClickListener {
+            if (currentDeck!!.cards.isNotEmpty()) {
+                currentCardIndex = (currentCardIndex + 1) % currentDeck!!.cards.size
+                displayCard()
+            }
+        }
+    }
+
+    private fun displayCard() {
+        binding.tvQuestion.text = currentDeck!!.cards[currentCardIndex].question
+        isShowingQuestion = true
     }
 }

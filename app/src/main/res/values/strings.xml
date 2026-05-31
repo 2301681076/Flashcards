@@ -1,3 +1,16 @@
 <resources>
-    <string name="app_name">Flashcards</string>
+    <string name="app_name">Флаш Карти</string>
+    <string name="new_deck">Ново тесте</string>
+    <string name="enter_deck_name">Въведете име за вашето тесте:</string>
+    <string name="deck_hint">Име на тестето</string>
+    <string name="create">Създай</string>
+    <string name="cancel">Отказ</string>
+    <string name="deck_created">Тестето е създадено!</string>
+    <string name="empty_name_error">Името не може да бъде празно!</string>
+    <string name="default_deck_name">Английски думи</string>
+
+    <string name="delete_deck_title">Изтриване на тесте</string>
+    <string name="delete_deck_message">Сигурни ли сте, че искате да изтриете това тесте?</string>
+    <string name="delete">Изтрий</string>
+    <string name="deck_deleted">Тестето е изтрито!</string>
 </resources>
